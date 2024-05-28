@@ -1,11 +1,23 @@
 import javax.swing.*;
 
+
 public class ServerWindow extends JFrame {
 
+    private boolean isConnected = false;
 
+
+
+    public ServerWindow() {
+        setTitle("Chat Server");
+        setSize(400, 300);
+
+    }
 
     //метод включения сервера
     void startServer() {
+
+
+
 
     }
 
@@ -20,7 +32,7 @@ public class ServerWindow extends JFrame {
     }
 
     //добавляет клиента который успешно подключился
-    void addClient() {
+    void addClient(ClientGUI clientGUI) {
 
     }
 
