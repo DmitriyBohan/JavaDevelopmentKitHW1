@@ -167,16 +167,18 @@ public class ClientGUI extends JFrame {
 
     //метод загрузки истории чата из файла
     void loadChatHistory() {
+        if (isConnected) {
 
-        File logFile = new File("chat_log.txt");
-        if (logFile.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(logFile))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    textArea.append(line + "\n");
+            File logFile = new File("chat_log.txt");
+            if (logFile.exists()) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(logFile))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        textArea.append(line + "\n");
+                    }
+                } catch (IOException e) {
+                    textArea.append("Error reading the log file: " + e.getMessage() + "\n");
                 }
-            } catch (IOException e) {
-                textArea.append("Error reading the log file: " + e.getMessage() + "\n");
             }
         }
     }
