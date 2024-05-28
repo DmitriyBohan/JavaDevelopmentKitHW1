@@ -13,7 +13,6 @@ public class ServerWindow extends JFrame {
     private boolean isRunning = false;
 
 
-
     public ServerWindow() {
         setTitle("Chat Server");
         setSize(400, 300);
@@ -30,21 +29,21 @@ public class ServerWindow extends JFrame {
         panel.add(startButton);
         panel.add(stopButton);
 
-        add(panel,BorderLayout.SOUTH);
+        add(panel, BorderLayout.SOUTH);
 
         //слушатели кнопок
-
-        stopButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-              stopServer();
-            }
-        });
 
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startServer();
+            }
+        });
+
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                stopServer();
             }
         });
 
@@ -59,10 +58,19 @@ public class ServerWindow extends JFrame {
 
     }
 
+    // Метод для проверки запущен ли сервер
+    public boolean getIsRunning(){
+        return isRunning;
+    }
+
     //метод выключающий сервер
     void stopServer() {
         isRunning = false;
         textArea.append("The server is stopped.\n");
+        for (ClientGUI client : clients) {
+            client.notifyDisconnection();
+        }
+        clients.clear();
     }
 
     // Метод для проверки запущен ли сервер
@@ -71,18 +79,22 @@ public class ServerWindow extends JFrame {
     }
 
     //добавляет клиента который успешно подключился
-    void addClient(ClientGUI clientGUI) {
-
+    void addClient(ClientGUI client) {
+        clients.add(client);
+        broadcastMessage(client.getLogin() + " подключился к беседе");
     }
 
     //удаляем отключивщигося клиента
-    void removeClient() {
-
+    void removeClient(ClientGUI client) {
+        clients.remove(client);
+        broadcastMessage(client.getLogin() + " отключился от беседы");
     }
 
     //метод отправки сообщений в общий чат
-    void broadcastMessage() {
-
+    void broadcastMessage(String message) {
+        for (ClientGUI client : clients) {
+            client.receiveMessage(message);
+        }
     }
 
     //логирования истории сообщений
@@ -91,7 +103,7 @@ public class ServerWindow extends JFrame {
     }
 
     //метод загружающий чат из файла
-    void loadChatHistory(){
+    void loadChatHistory() {
 
     }
 

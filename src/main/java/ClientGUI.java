@@ -2,12 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 public class ClientGUI extends JFrame {
 
     private ServerWindow serverWindow;
-    private JTextArea textArea;    //Поле для сособщений чата
+    private JTextArea textArea;    //Поле для сообщений чата
     private JTextField inputField;    // Поле для ввода сообщений
     private JTextField serverAddressField;
     private JTextField portField;
@@ -15,6 +17,10 @@ public class ClientGUI extends JFrame {
     private JPasswordField passwordField;
     private boolean isConnected = false;
 
+
+    public String getLogin() {
+        return loginField.getText();
+    }
 
     public ClientGUI(ServerWindow serverWindow) {
 
@@ -24,6 +30,8 @@ public class ClientGUI extends JFrame {
         setTitle("Chat Client");
 
         setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         textArea = new JTextArea();
         add(new JScrollPane(textArea), BorderLayout.CENTER);
 
@@ -37,8 +45,12 @@ public class ClientGUI extends JFrame {
         portField = new JTextField("8189");  //по аналогии с ip адресом
         connectionPanel.add(portField);
 
+//        connectionPanel.add(new JLabel("Login:"));
+//        loginField = new JTextField();
+//        connectionPanel.add(loginField);
+
         connectionPanel.add(new JLabel("Login:"));
-        loginField = new JTextField();
+        loginField = new JTextField("DIMA");
         connectionPanel.add(loginField);
 
         connectionPanel.add(new JLabel("Password:"));
@@ -75,6 +87,24 @@ public class ClientGUI extends JFrame {
             }
         });
 
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sendMessage();
+            }
+        });
+
+        //addKeyListener- слушатель кнопок
+        //KeyAdapter - https://javaswing.wordpress.com/2009/12/23/keylistener_using/
+        inputField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    sendMessage();
+                }
+            }
+        });
+
         setVisible(true);
     }
 
@@ -96,19 +126,30 @@ public class ClientGUI extends JFrame {
 
     // Метод  отключения от сервера
     void notifyDisconnection() {
-
+        isConnected = false;
+        JOptionPane.showMessageDialog(ClientGUI.this, "You have been disconnected from the server.", "Information", JOptionPane.INFORMATION_MESSAGE);
+        textArea.append("You have been disconnected from the server.\n");
     }
 
 
     // Метод для отправки сообщения на сервер
     void sendMessage() {
-
+        if (!isConnected) {
+            return;
+        }
+        String message = inputField.getText();
+        if (!message.isEmpty()) {
+            String login = loginField.getText();
+            String fullMessage = login + ": " + message;
+            serverWindow.broadcastMessage(fullMessage);
+            inputField.setText("");
+        }
     }
 
 
     //метод выводит сообщения в чат
-    void receiveMessage() {
-
+    public void receiveMessage(String message) {
+        textArea.append(message + "\n");
     }
 
 
