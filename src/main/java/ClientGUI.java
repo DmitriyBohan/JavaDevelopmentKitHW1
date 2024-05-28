@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 public class ClientGUI extends JFrame {
@@ -53,8 +56,13 @@ public class ClientGUI extends JFrame {
         loginField = new JTextField("DIMA");
         connectionPanel.add(loginField);
 
+//        connectionPanel.add(new JLabel("Password:"));
+//        passwordField = new JPasswordField();
+//        connectionPanel.add(passwordField);
+
+
         connectionPanel.add(new JLabel("Password:"));
-        passwordField = new JPasswordField();
+        passwordField = new JPasswordField("111");
         connectionPanel.add(passwordField);
 
         JButton connectButton = new JButton("Connect");
@@ -105,6 +113,7 @@ public class ClientGUI extends JFrame {
             }
         });
 
+        loadChatHistory();
         setVisible(true);
     }
 
@@ -123,6 +132,7 @@ public class ClientGUI extends JFrame {
             inputField.setVisible(true);
             inputField.getParent().setVisible(true);
             textArea.append("You have successfully connected!\n");
+            loadChatHistory();
         }
     }
 
@@ -158,5 +168,16 @@ public class ClientGUI extends JFrame {
     //метод загрузки истории чата из файла
     void loadChatHistory() {
 
+        File logFile = new File("chat_log.txt");
+        if (logFile.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(logFile))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    textArea.append(line + "\n");
+                }
+            } catch (IOException e) {
+                textArea.append("Error reading the log file: " + e.getMessage() + "\n");
+            }
+        }
     }
 }

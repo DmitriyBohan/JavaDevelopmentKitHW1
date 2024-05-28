@@ -2,9 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +117,16 @@ public class ServerWindow extends JFrame {
 
     //метод загружающий чат из файла
     void loadChatHistory() {
-
+        if (Files.exists(Paths.get(LOG_FILE))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(LOG_FILE))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    textArea.append(line + "\n");
+                }
+            } catch (IOException e) {
+                textArea.append("Ошибка чтения лог-файла: " + e.getMessage() + "\n"); // Вывод сообщения об ошибке в JTextArea
+            }
+        }
     }
 
 }
