@@ -80,13 +80,18 @@ public class ClientGUI extends JFrame {
 
     // Метод для подключения к серверу
     void connectToServer() {
-        isConnected = true;
-        serverWindow.addClient(this);
-        textArea.setVisible(true);
-        inputField.setVisible(true);
-        inputField.getParent().setVisible(true);
-        textArea.append("You have successfully connected!\n");
+        if (!serverWindow.isRunning()){
+            //https://java-online.ru/swing-joptionpane.xhtml
+            JOptionPane.showMessageDialog(ClientGUI.this, "The server is not running.", "Error", JOptionPane.ERROR_MESSAGE);
+        }else {
 
+            isConnected = true;
+            serverWindow.addClient(this);
+            textArea.setVisible(true);
+            inputField.setVisible(true);
+            inputField.getParent().setVisible(true);
+            textArea.append("You have successfully connected!\n");
+        }
     }
 
     // Метод  отключения от сервера

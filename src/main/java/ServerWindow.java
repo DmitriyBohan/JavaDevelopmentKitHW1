@@ -66,8 +66,8 @@ public class ServerWindow extends JFrame {
     }
 
     // Метод для проверки запущен ли сервер
-    boolean isRunning() {
-        return false;
+    public boolean isRunning() {
+        return isRunning;
     }
 
     //добавляет клиента который успешно подключился
