@@ -61,7 +61,8 @@ public class ServerWindow extends JFrame {
 
     //метод выключающий сервер
     void stopServer() {
-
+        isRunning = false;
+        textArea.append("The server is stopped.\n");
     }
 
     // Метод для проверки запущен ли сервер
