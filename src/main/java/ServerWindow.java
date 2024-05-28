@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,10 @@ public class ServerWindow extends JFrame {
         setTitle("Chat Server");
         setSize(400, 300);
 
+        textArea = new JTextArea();
+        textArea.setEditable(false);
+        add(new JScrollPane(textArea), BorderLayout.CENTER);  // Добавление JTextArea в центр окна с возможностью прокрутки
+
         JPanel panel = new JPanel(new GridLayout(5, 2));
 
         JButton startButton = new JButton("Start");
@@ -26,14 +32,30 @@ public class ServerWindow extends JFrame {
 
         add(panel,BorderLayout.SOUTH);
 
+        //слушатели кнопок
+
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              stopServer();
+            }
+        });
+
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startServer();
+            }
+        });
+
+
         setVisible(true);
     }
 
     //метод включения сервера
     void startServer() {
-
-
-
+        isRunning = true;
+        textArea.append("The server is running!\n");
 
     }
 
