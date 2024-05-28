@@ -2,12 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ServerWindow extends JFrame {
 
+    private static final String LOG_FILE = "chat_log.txt";;
     private JTextArea textArea;
     private List<ClientGUI> clients = new ArrayList<>();
     private boolean isRunning = false;
@@ -92,13 +96,22 @@ public class ServerWindow extends JFrame {
 
     //метод отправки сообщений в общий чат
     void broadcastMessage(String message) {
+        logMessage(message);
         for (ClientGUI client : clients) {
             client.receiveMessage(message);
         }
     }
 
     //логирования истории сообщений
-    void logMessage() {
+    private void logMessage(String message) {
+
+        textArea.append(message + "\n");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE, true))) {
+            writer.write(message);
+            writer.newLine();
+        } catch (IOException e) {
+            textArea.append("Error writing to the log file:" + e.getMessage() + "\n");
+        }
 
     }
 
