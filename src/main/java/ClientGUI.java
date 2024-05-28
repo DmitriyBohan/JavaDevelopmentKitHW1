@@ -110,10 +110,12 @@ public class ClientGUI extends JFrame {
 
     // Метод для подключения к серверу
     void connectToServer() {
-        if (!serverWindow.isRunning()){
+        if (loginField.getText().isEmpty() || new String(passwordField.getPassword()).isEmpty()) {
+            JOptionPane.showMessageDialog(ClientGUI.this, "Please fill in the login and password fields.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (!serverWindow.isRunning()) {
             //https://java-online.ru/swing-joptionpane.xhtml
             JOptionPane.showMessageDialog(ClientGUI.this, "The server is not running.", "Error", JOptionPane.ERROR_MESSAGE);
-        }else {
+        } else {
 
             isConnected = true;
             serverWindow.addClient(this);
