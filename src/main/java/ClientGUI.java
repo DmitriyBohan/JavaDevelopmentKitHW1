@@ -85,6 +85,8 @@ public class ClientGUI extends JFrame {
         textArea.setVisible(true);
         inputField.setVisible(true);
         inputField.getParent().setVisible(true);
+        textArea.append("You have successfully connected!\n");
+
     }
 
     // Метод  отключения от сервера
