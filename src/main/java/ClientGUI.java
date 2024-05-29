@@ -48,22 +48,22 @@ public class ClientGUI extends JFrame {
         portField = new JTextField("8189");  //по аналогии с ip адресом
         connectionPanel.add(portField);
 
-//        connectionPanel.add(new JLabel("Login:"));
-//        loginField = new JTextField();
-//        connectionPanel.add(loginField);
-
         connectionPanel.add(new JLabel("Login:"));
-        loginField = new JTextField("DIMA");
+        loginField = new JTextField();
         connectionPanel.add(loginField);
 
-//        connectionPanel.add(new JLabel("Password:"));
-//        passwordField = new JPasswordField();
-//        connectionPanel.add(passwordField);
-
+//        connectionPanel.add(new JLabel("Login:"));
+//        loginField = new JTextField("DIMA");
+//        connectionPanel.add(loginField);
 
         connectionPanel.add(new JLabel("Password:"));
-        passwordField = new JPasswordField("111");
+        passwordField = new JPasswordField();
         connectionPanel.add(passwordField);
+
+
+//        connectionPanel.add(new JLabel("Password:"));
+//        passwordField = new JPasswordField("111");
+//        connectionPanel.add(passwordField);
 
         JButton connectButton = new JButton("Connect");
         connectionPanel.add(connectButton);
@@ -118,7 +118,7 @@ public class ClientGUI extends JFrame {
     }
 
     // Метод для подключения к серверу
-    void connectToServer() {
+    private void connectToServer() {
         if (loginField.getText().isEmpty() || new String(passwordField.getPassword()).isEmpty()) {
             JOptionPane.showMessageDialog(ClientGUI.this, "Please fill in the login and password fields.", "Error", JOptionPane.ERROR_MESSAGE);
         } else if (!serverWindow.isRunning()) {
@@ -137,7 +137,7 @@ public class ClientGUI extends JFrame {
     }
 
     // Метод  отключения от сервера
-    void notifyDisconnection() {
+    private void notifyDisconnection() {
         isConnected = false;
         JOptionPane.showMessageDialog(ClientGUI.this, "You have been disconnected from the server.", "Information", JOptionPane.INFORMATION_MESSAGE);
         textArea.append("You have been disconnected from the server.\n");
@@ -145,7 +145,7 @@ public class ClientGUI extends JFrame {
 
 
     // Метод для отправки сообщения на сервер
-    void sendMessage() {
+     private void sendMessage() {
         if (!isConnected) {
             return;
         }
@@ -166,7 +166,7 @@ public class ClientGUI extends JFrame {
 
 
     //метод загрузки истории чата из файла
-    void loadChatHistory() {
+    private void loadChatHistory() {
         if (isConnected) {
 
             File logFile = new File("chat_log.txt");

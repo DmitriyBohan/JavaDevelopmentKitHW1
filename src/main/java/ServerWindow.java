@@ -56,8 +56,9 @@ public class ServerWindow extends JFrame {
     }
 
     //метод включения сервера
-    void startServer() {
+    private void startServer() {
         isRunning = true;
+        loadChatHistory();
         textArea.append("The server is running!\n");
 
     }
@@ -68,7 +69,7 @@ public class ServerWindow extends JFrame {
     }
 
     //метод выключающий сервер
-    void stopServer() {
+    private void stopServer() {
         isRunning = false;
         textArea.append("The server is stopped.\n");
         for (ClientGUI client : clients) {
@@ -83,19 +84,19 @@ public class ServerWindow extends JFrame {
     }
 
     //добавляет клиента который успешно подключился
-    void addClient(ClientGUI client) {
+    public void addClient(ClientGUI client) {
         clients.add(client);
         broadcastMessage(client.getLogin() + " подключился к беседе");
     }
 
     //удаляем отключивщигося клиента
-    void removeClient(ClientGUI client) {
+    public void removeClient(ClientGUI client) {
         clients.remove(client);
         broadcastMessage(client.getLogin() + " отключился от беседы");
     }
 
     //метод отправки сообщений в общий чат
-    void broadcastMessage(String message) {
+    public void broadcastMessage(String message) {
         logMessage(message);
         for (ClientGUI client : clients) {
             client.receiveMessage(message);
@@ -116,7 +117,7 @@ public class ServerWindow extends JFrame {
     }
 
     //метод загружающий чат из файла
-    void loadChatHistory() {
+    private void loadChatHistory() {
         if (Files.exists(Paths.get(LOG_FILE))) {
             try (BufferedReader reader = new BufferedReader(new FileReader(LOG_FILE))) {
                 String line;
