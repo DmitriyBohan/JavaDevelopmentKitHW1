@@ -137,7 +137,7 @@ public class ClientGUI extends JFrame {
     }
 
     // Метод  отключения от сервера
-    private void notifyDisconnection() {
+    public void notifyDisconnection() {
         isConnected = false;
         JOptionPane.showMessageDialog(ClientGUI.this, "You have been disconnected from the server.", "Information", JOptionPane.INFORMATION_MESSAGE);
         textArea.append("You have been disconnected from the server.\n");
